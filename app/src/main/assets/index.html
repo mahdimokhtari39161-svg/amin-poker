@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#071d18"><title>امین پوکر</title>
+<style>
+:root{--gold:#e6c36a;--felt:#08734f;--felt2:#064a37;--panel:#102b25;--muted:#a9c5b8}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#173e32,#061511 72%);color:#fff;font-family:Tahoma,Arial,sans-serif;min-height:100vh;overflow-x:hidden}
+header{height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;border-bottom:1px solid #ffffff18;background:#071a16cc}
+.logo{font-weight:900;color:var(--gold);font-size:20px;letter-spacing:.5px}.sub{font-size:10px;color:var(--muted);margin-top:3px}
+.pill{border:1px solid #b99b4c66;border-radius:20px;padding:7px 11px;color:var(--gold);font-size:12px}
+main{max-width:760px;margin:auto;padding:14px}
+.topline{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;color:var(--muted);font-size:12px}
+.table-wrap{perspective:1000px;padding:8px 2px 16px}
+.table{position:relative;min-height:480px;border:12px solid #50331f;border-radius:48%/34%;background:radial-gradient(ellipse at center,#119567 0%,#08734f 48%,#064a37 100%);box-shadow:inset 0 0 0 4px #b68a4a,inset 0 0 45px #001c14,0 18px 35px #0009;transform:rotateX(3deg);padding:18px 10px}
+.table:before{content:"";position:absolute;inset:12px;border:1px solid #d8bd7266;border-radius:48%/34%;pointer-events:none}
+.seat{position:absolute;z-index:2;text-align:center;min-width:112px;padding:7px 9px;border-radius:13px;background:linear-gradient(145deg,#17362e,#091d18);border:1px solid #c9aa5a66;box-shadow:0 5px 12px #00140f99;font-size:11px}
+.seat .name{font-weight:bold;color:#f4dfaa}.seat .stack{color:#d9e7df;margin-top:4px}.seat .bet{color:var(--gold);font-size:10px;margin-top:3px}.seat.active{border-color:#f6d46f;box-shadow:0 0 15px #f6d46f77}
+.seat.folded{opacity:.42}.seat.s0{bottom:10px;left:50%;transform:translateX(-50%)}.seat.s1{top:14px;left:8%}.seat.s2{top:14px;right:8%}.seat.s3{top:44%;right:2%}
+.cards{display:flex;justify-content:center;gap:7px;min-height:82px;align-items:center}
+.card{width:48px;height:68px;border-radius:7px;background:linear-gradient(145deg,#fff,#e9e6df);color:#171717;display:flex;flex-direction:column;justify-content:space-between;padding:5px;font-weight:900;box-shadow:0 4px 7px #001b13aa;transform:rotate(-2deg);font-size:16px}
+.card:nth-child(even){transform:rotate(3deg) translateY(-2px)}.card.red{color:#d42e3b}.card.back{background:repeating-linear-gradient(45deg,#173b79,#173b79 5px,#e5d7a9 6px,#173b79 8px);border:3px solid #f5e8c6}
+.card .small{font-size:11px}.community{position:absolute;top:37%;left:50%;transform:translate(-50%,-50%);width:100%;text-align:center}
+.community .cards{min-height:75px}.pot{color:#ffe5a0;font-weight:bold;margin-top:10px;text-shadow:0 2px 4px #003}
+.center-label{font-size:11px;color:#d6f1e3;margin-top:4px}
+.status{margin:12px 0;background:#102b25;border:1px solid #ffffff18;border-radius:12px;padding:11px;text-align:center;font-size:13px;color:#e5e9d9;min-height:42px}
+.actions{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+button{border:0;border-radius:11px;padding:13px 5px;font-family:inherit;font-weight:bold;color:white;background:linear-gradient(180deg,#247e5c,#12533e);box-shadow:0 4px 0 #073626;cursor:pointer}
+button:active{transform:translateY(2px);box-shadow:0 2px 0 #073626}button.gold{background:linear-gradient(180deg,#e5c66f,#a77b2d);color:#241a08;box-shadow:0 4px 0 #6e4c1a}button.red{background:linear-gradient(180deg,#a94b4b,#722d32);box-shadow:0 4px 0 #431b20}button:disabled{opacity:.35;cursor:default}
+.raise-row{display:flex;align-items:center;gap:10px;margin:12px 0;background:#102b25;padding:10px;border-radius:12px;font-size:12px;color:var(--muted)}
+input[type=range]{flex:1;accent-color:var(--gold)}.raise-value{color:var(--gold);min-width:50px;text-align:center}
+.bottom{display:flex;gap:8px;margin-top:10px}.bottom button{flex:1;background:#263b34;box-shadow:0 3px 0 #14231e;font-size:12px}
+.rules{color:#92ada1;font-size:10px;text-align:center;margin:12px 0 6px;line-height:1.8}
+.overlay{position:fixed;inset:0;background:#020b08dd;display:flex;align-items:center;justify-content:center;padding:20px;z-index:9}
+.modal{width:min(420px,100%);background:linear-gradient(145deg,#173d30,#0a1c17);border:1px solid #d5b75b77;border-radius:20px;padding:24px;text-align:center;box-shadow:0 20px 60px #000}
+.modal h1{color:var(--gold);margin:0 0 8px;font-size:28px}.modal p{color:#c5d8ce;font-size:13px;line-height:1.9}.modal button{width:100%;margin-top:10px}
+.hidden{display:none!important}
+@media(max-width:390px){.table{min-height:450px;border-width:9px}.seat{min-width:94px;font-size:10px;padding:6px}.card{width:42px;height:61px}.actions{gap:6px}button{font-size:12px}.community{top:39%}}
+</style></head>
+<body>
+<header><div><div class="logo">♠ امین پوکر</div><div class="sub">TEXAS HOLD'EM · نسخه آزمایشی</div></div><div class="pill">چیپ مجازی</div></header>
+<main>
+<div class="topline"><span id="roundLabel">دست شماره ۱</span><span id="blinds">بلایند ۱۰ / ۲۰</span></div>
+<div class="table-wrap"><section class="table" id="table">
+<div class="seat s1" id="seat1"><div class="name">آرمان</div><div class="stack"></div><div class="bet"></div><div class="cards"></div></div>
+<div class="seat s2" id="seat2"><div class="name">نیما</div><div class="stack"></div><div class="bet"></div><div class="cards"></div></div>
+<div class="seat s3" id="seat3"><div class="name">سامان</div><div class="stack"></div><div class="bet"></div><div class="cards"></div></div>
+<div class="community"><div class="cards" id="board"></div><div class="pot" id="pot">جایزه: ۰</div><div class="center-label" id="phaseText">آماده شروع</div></div>
+<div class="seat s0" id="seat0"><div class="name">شما</div><div class="stack"></div><div class="bet"></div><div class="cards"></div></div>
+</section></div>
+<div class="status" id="status">برای شروع بازی دکمه «شروع دست» را بزن.</div>
+<div class="raise-row"><span>مبلغ افزایش</span><input id="raiseRange" type="range" min="20" max="500" step="10" value="50"><span class="raise-value" id="raiseValue">۵۰</span></div>
+<div class="actions">
+<button id="foldBtn" class="red" disabled>فولد</button><button id="callBtn" disabled>چک / کال</button><button id="raiseBtn" class="gold" disabled>ریز</button><button id="startBtn">شروع دست</button>
+</div>
+<div class="bottom"><button id="newBtn">دست جدید</button><button id="resetBtn">شروع از نو</button></div>
+<div class="rules">قوانین تگزاس هولدم · هر بازیکن ۲ کارت · ۵ کارت مشترک · بهترین ترکیب ۵ کارتی برنده است.<br>این بازی فقط با ژتون مجازی است و هیچ پول واقعی در آن وجود ندارد.</div>
+</main>
+<div class="overlay" id="welcome"><div class="modal"><h1>♠ امین پوکر</h1><p>به میز پوکر خوش آمدی!<br>با سه رقیب هوش مصنوعی در تگزاس هولدم بازی کن.<br>هدف: ساخت بهترین دست پنج‌کارتی و بردن ژتون‌های مجازی.</p><button id="playBtn" class="gold">ورود به بازی</button></div></div>
+<script>
+const suits=['♠','♥','♦','♣'], ranks=['2','3','4','5','6','7','8','9','10','J','Q','K','A'];
+const fa=n=>String(n).replace(/[0-9]/g,d=>'۰۱۲۳۴۵۶۷۸۹'[+d]);
+let players=[],deck=[],board=[],pot=0,street=0,handNo=0,current=0,betToCall=0,phase='idle',acted=new Set(),dealer=0,roundOver=false;
+const names=['شما','آرمان','نیما','سامان'];
+const $=id=>document.getElementById(id);
+function makeDeck(){let d=[];for(let s of suits)for(let i=0;i<13;i++)d.push({r:i+2,s});return d.sort(()=>Math.random()-.5)}
+function label(c){return ({11:'J',12:'Q',13:'K',14:'A'}[c.r]||c.r)+c.s}
+function cardHTML(c,hide=false){if(hide||!c)return '<div class="card back"></div>';return '<div class="card '+(['♥','♦'].includes(c.s)?'red':'')+'"><span>'+label(c)+'</span><span class="small">'+c.s+'</span></div>'}
+function init(){players=names.map((name,i)=>({name,stack:1000,hand:[],bet:0,total:0,fold:false,allin:false}));dealer=0;render()}
+function deal(){return deck.pop()}
+function startHand(){if(phase!=='idle'&&phase!=='done')return;if(players.filter(p=>p.stack>0).length<2){say('چیپ بازیکنان تمام شده است؛ بازی را از نو شروع کن.');return}
+handNo++;deck=makeDeck();board=[];pot=0;street=0;betToCall=0;acted.clear();roundOver=false;players.forEach(p=>{p.hand=[];p.bet=0;p.total=0;p.fold=p.stack<=0;p.allin=false});
+for(let k=0;k<2;k++)players.forEach(p=>{if(!p.fold)p.hand.push(deal())});
+const sb=(dealer+1)%4,bb=(dealer+2)%4;post(sb,10);post(bb,20);betToCall=20;current=(dealer+3)%4;phase='preflop';say('کارت‌ها پخش شد. نوبت شماست!');render();if(current!==0)advanceAI()}
+function post(i,n){let p=players[i],v=Math.min(n,p.stack);p.stack-=v;p.bet+=v;p.total+=v;pot+=v;if(p.stack===0)p.allin=true}
+function say(t){$('status').textContent=t}
+function nextActive(from){for(let k=1;k<=4;k++){let i=(from+k)%4,p=players[i];if(!p.fold&&!p.allin)return i}return -1}
+function need(){return Math.max(0,betToCall-players[0].bet)}
+function render(){ $('roundLabel').textContent='دست شماره '+fa(handNo||1);$('pot').textContent='جایزه: '+fa(pot);$('phaseText').textContent=({preflop:'پیش از فلاپ',flop:'فلاپ',turn:'ترن',river:'ریور',showdown:'نمایش کارت‌ها',done:'پایان دست',idle:'آماده شروع'})[phase]||'';
+$('board').innerHTML=board.map(c=>cardHTML(c)).join('')+Array(Math.max(0,5-board.length)).fill('<div style="width:48px"></div>').join('');
+players.forEach((p,i)=>{let el=$('seat'+i);el.classList.toggle('active',i===current&&!roundOver);el.classList.toggle('folded',p.fold);el.querySelector('.stack').textContent='ژتون: '+fa(p.stack);el.querySelector('.bet').textContent=p.fold?'فولد':p.bet?'شرط: '+fa(p.bet):'';el.querySelector('.cards').innerHTML=p.hand.map(c=>cardHTML(c,i!==0&&phase!=='showdown'&&phase!=='done')).join('')});
+const myTurn=current===0&&!roundOver&&phase!=='idle'&&phase!=='done';['foldBtn','callBtn','raiseBtn'].forEach(id=>$(id).disabled=!myTurn);$('startBtn').disabled=!(phase==='idle'||phase==='done');$('callBtn').textContent=need()?'کال '+fa(need()):'چک';$('raiseRange').max=Math.max(20,Math.min(500,players[0].stack));$('raiseRange').value=Math.min(50,Math.max(20,players[0].stack));$('raiseValue').textContent=fa($('raiseRange').value)}
+function eval5(cards){let rs=cards.map(c=>c.r).sort((a,b)=>b-a),cnt={};rs.forEach(r=>cnt[r]=(cnt[r]||0)+1);let groups=Object.entries(cnt).map(([r,n])=>[n,+r]).sort((a,b)=>b[0]-a[0]||b[1]-a[1]);let flush=cards.every(c=>c.s===cards[0].s),uniq=[...new Set(rs)],straight=0;
+for(let i=0;i<uniq.length-4;i++)if(uniq[i]-uniq[i+4]===4)straight=uniq[i];if(uniq.includes(14)&&[5,4,3,2].every(x=>uniq.includes(x)))straight=5;
+if(flush&&straight)return [8,straight];if(groups[0][0]===4)return [7,groups[0][1],groups[1][1]];if(groups[0][0]===3&&groups[1][0]===2)return [6,groups[0][1],groups[1][1]];if(flush)return [5,...rs];if(straight)return [4,straight];if(groups[0][0]===3)return [3,groups[0][1],...groups.slice(1).map(x=>x[1])];if(groups[0][0]===2&&groups[1][0]===2)return [2,Math.max(groups[0][1],groups[1][1]),Math.min(groups[0][1],groups[1][1]),groups[2][1]];if(groups[0][0]===2)return [1,groups[0][1],...groups.slice(1).map(x=>x[1])];return [0,...rs]}
+function best(cards){let b=null;for(let a=0;a<cards.length-4;a++)for(let c=a+1;c<cards.length-3;c++)for(let d=c+1;d<cards.length-2;d++)for(let e=d+1;e<cards.length-1;e++)for(let f=e+1;f<cards.length;f++){let v=eval5([cards[a],cards[c],cards[d],cards[e],cards[f]]);if(!b||cmp(v,b)>0)b=v}return b||[0]}
+function cmp(a,b){for(let i=0;i<Math.max(a.length,b.length);i++){let d=(a[i]||0)-(b[i]||0);if(d)return d}return 0}
+function strength(p){if(board.length===0){let a=p.hand[0].r,b=p.hand[1].r,hi=Math.max(a,b),lo=Math.min(a,b);return (hi+lo)/30+(a===b?.35:0)+(p.hand[0].s===p.hand[1].s?.08:0)+(hi-lo===1?.04:0)}return best([...p.hand,...board])[0]/8}
+function playerAction(action,amount=0){if(current!==0||roundOver)return;act(0,action,amount);if(!roundOver)advanceAI()}
+function act(i,action,amount=0){let p=players[i];if(p.fold||p.allin)return;
+if(action==='fold'){p.fold=true;acted.add(i);say(p.name+' فولد کرد.')}
+else if(action==='call'){let v=Math.min(needFor(i),p.stack);p.stack-=v;p.bet+=v;p.total+=v;pot+=v;if(!p.stack)p.allin=true;acted.add(i);say(p.name+(v?' کال کرد.':' چک کرد.'))}
+else if(action==='raise'){let target=betToCall+amount,add=Math.min(p.stack,Math.max(needFor(i),target-p.bet));p.stack-=add;p.bet+=add;p.total+=add;pot+=add;if(!p.stack)p.allin=true;betToCall=Math.max(betToCall,p.bet);acted=new Set([i]);say(p.name+' ریز داد.')}
+current=nextActive(i);render();checkProgress()}
+function needFor(i){return Math.max(0,betToCall-players[i].bet)}
+function checkProgress(){let live=players.filter(p=>!p.fold);if(live.length===1){let w=live[0];w.stack+=pot;say(w.name+' برنده شد و '+fa(pot)+' ژتون گرفت!');pot=0;finish();return}
+let contenders=players.filter(p=>!p.fold&&!p.allin),allMatched=contenders.every(p=>p.bet===betToCall),everyoneActed=contenders.every(p=>acted.has(players.indexOf(p)));
+if(contenders.length<=1|| (allMatched&&everyoneActed)){if(players.every(p=>p.fold||p.allin)){while(board.length<5)dealStreet();showdown();return}nextStreet()}}
+function advanceAI(){let safety=0;while(current>0&&!roundOver&&safety++<12){let p=players[current];if(!p||p.fold||p.allin){current=nextActive(current);continue}
+let call=needFor(current),str=strength(p),r=Math.random();let action;
+if(call>p.stack*.55&&str<.55&&r<.72)action='fold';else if(str>.76&&r<.32&&p.stack>call+40)action='raise';else action='call';
+let amt=Math.min(p.stack,Math.max(30,Math.floor(pot*.35/10)*10));act(current,action,amt)}
+if(current===0&&!roundOver)render()}
+function dealStreet(){players.forEach(p=>p.bet=0);betToCall=0;acted.clear();if(street===0){board.push(deal(),deal(),deal());phase='flop'}else if(street===1){board.push(deal());phase='turn'}else if(street===2){board.push(deal());phase='river'}street++;current=nextActive(dealer);if(current<0){showdown();return}say(({flop:'سه کارت فلاپ رو شد.',turn:'کارت ترن رو شد.',river:'کارت ریور رو شد.'})[phase]);render();if(current!==0)advanceAI()}
+function nextStreet(){if(street>=3){showdown();return}dealStreet()}
+function showdown(){phase='showdown';let alive=players.map((p,i)=>({p,i})).filter(x=>!x.p.fold);alive.sort((a,b)=>cmp(best([...b.p.hand,...board]),best([...a.p.hand,...board])));let win=alive[0].p;let winners=alive.filter(x=>cmp(best([...x.p.hand,...board]),best([...win.hand,...board]))===0);let share=Math.floor(pot/winners.length);winners.forEach(x=>x.p.stack+=share);say('برنده: '+winners.map(x=>x.p.name).join(' و ')+' · هر نفر '+fa(share)+' ژتون');pot=0;finish()}
+function finish(){roundOver=true;phase='done';dealer=(dealer+1)%4;current=-1;render()}
+$('playBtn').onclick=()=>{$('welcome').classList.add('hidden');startHand()};
+$('startBtn').onclick=startHand;$('newBtn').onclick=()=>{if(phase==='idle'||phase==='done')startHand();else say('این دست هنوز تمام نشده است.')};
+$('resetBtn').onclick=()=>{init();handNo=0;phase='idle';say('بازی از نو آماده شد. برای شروع دست بزن.');render()};
+$('foldBtn').onclick=()=>playerAction('fold');$('callBtn').onclick=()=>playerAction('call');$('raiseBtn').onclick=()=>playerAction('raise',+$('raiseRange').value);
+$('raiseRange').oninput=e=>$('raiseValue').textContent=fa(e.target.value);
+init();
+</script></body></html>
