@@ -105,7 +105,9 @@ function dealStreet(){players.forEach(p=>p.bet=0);betToCall=0;acted.clear();if(s
 function nextStreet(){if(street>=3){showdown();return}dealStreet()}
 function showdown(){phase='showdown';let alive=players.map((p,i)=>({p,i})).filter(x=>!x.p.fold);alive.sort((a,b)=>cmp(best([...b.p.hand,...board]),best([...a.p.hand,...board])));let win=alive[0].p;let winners=alive.filter(x=>cmp(best([...x.p.hand,...board]),best([...win.hand,...board]))===0);let share=Math.floor(pot/winners.length);winners.forEach(x=>x.p.stack+=share);say('برنده: '+winners.map(x=>x.p.name).join(' و ')+' · هر نفر '+fa(share)+' ژتون');pot=0;finish()}
 function finish(){roundOver=true;phase='done';dealer=(dealer+1)%4;current=-1;render()}
-$('playBtn').onclick=()=>{$('welcome').classList.add('hidden');startHand()};\n$('helpBtn').onclick=()=> $('tutorial').classList.remove('hidden');\n$('closeTutorial').onclick=()=> $('tutorial').classList.add('hidden');
+$('playBtn').onclick=()=>{$('welcome').classList.add('hidden');startHand()};
+$('helpBtn').onclick=()=> $('tutorial').classList.remove('hidden');
+$('closeTutorial').onclick=()=> $('tutorial').classList.add('hidden');
 $('startBtn').onclick=startHand;$('newBtn').onclick=()=>{if(phase==='idle'||phase==='done')startHand();else say('این دست هنوز تمام نشده است.')};
 $('resetBtn').onclick=()=>{init();handNo=0;phase='idle';say('بازی از نو آماده شد. برای شروع دست بزن.');render()};
 $('foldBtn').onclick=()=>playerAction('fold');$('callBtn').onclick=()=>playerAction('call');$('raiseBtn').onclick=()=>playerAction('raise',+$('raiseRange').value);
