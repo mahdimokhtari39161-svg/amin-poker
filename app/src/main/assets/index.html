@@ -20,8 +20,8 @@ main{max-width:760px;margin:auto;padding:14px}
 .cards{display:flex;justify-content:center;gap:7px;min-height:82px;align-items:center}
 .card{width:48px;height:68px;border-radius:7px;background:linear-gradient(145deg,#fff,#e9e6df);color:#171717;display:flex;flex-direction:column;justify-content:space-between;padding:5px;font-weight:900;box-shadow:0 4px 7px #001b13aa;transform:rotate(-2deg);font-size:16px}
 .card:nth-child(even){transform:rotate(3deg) translateY(-2px)}.card.red{color:#d42e3b}.card.back{background:repeating-linear-gradient(45deg,#173b79,#173b79 5px,#e5d7a9 6px,#173b79 8px);border:3px solid #f5e8c6}
-.card .small{font-size:11px}.community{position:absolute;top:37%;left:50%;transform:translate(-50%,-50%);width:100%;text-align:center}
-.community .cards{min-height:75px}.pot{color:#ffe5a0;font-weight:bold;margin-top:10px;text-shadow:0 2px 4px #003}
+.card .small{font-size:11px}.seat.s0:after{content:"کارت‌های شما";display:block;color:#ffe8a5;font-size:10px;margin-top:5px}.community:before{content:"کارت‌های مشترک روی میز";display:inline-block;background:#043d2d;border:1px solid #b9dfc477;border-radius:20px;padding:5px 12px;color:#fff;font-size:12px;font-weight:bold;margin-bottom:5px;box-shadow:0 2px 8px #002}.community{position:absolute;top:37%;left:50%;transform:translate(-50%,-50%);width:100%;text-align:center}
+.community .cards{min-height:75px}.board-label{display:inline-block;background:#043d2d;border:1px solid #b9dfc477;border-radius:20px;padding:5px 12px;color:#fff;font-size:12px;font-weight:bold;margin-bottom:5px;box-shadow:0 2px 8px #002}.pot{color:#ffe5a0;font-weight:bold;margin-top:10px;text-shadow:0 2px 4px #003}
 .center-label{font-size:11px;color:#d6f1e3;margin-top:4px}
 .status{margin:12px 0;background:#102b25;border:1px solid #ffffff18;border-radius:12px;padding:11px;text-align:center;font-size:13px;color:#e5e9d9;min-height:42px}
 .actions{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
@@ -38,7 +38,7 @@ input[type=range]{flex:1;accent-color:var(--gold)}.raise-value{color:var(--gold)
 @media(max-width:390px){.table{min-height:450px;border-width:9px}.seat{min-width:94px;font-size:10px;padding:6px}.card{width:42px;height:61px}.actions{gap:6px}button{font-size:12px}.community{top:39%}}
 </style></head>
 <body>
-<header><div><div class="logo">♠ امین پوکر</div><div class="sub">TEXAS HOLD'EM · نسخه آزمایشی</div></div><div class="pill">چیپ مجازی</div></header>
+<header><div><div class="logo">♠ امین پوکر</div><div class="sub">TEXAS HOLD'EM · نسخه آزمایشی</div></div><button class="pill" id="helpBtn" style="background:#173d30;cursor:pointer">؟ آموزش بازی</button></header>
 <main>
 <div class="topline"><span id="roundLabel">دست شماره ۱</span><span id="blinds">بلایند ۱۰ / ۲۰</span></div>
 <div class="table-wrap"><section class="table" id="table">
@@ -56,7 +56,7 @@ input[type=range]{flex:1;accent-color:var(--gold)}.raise-value{color:var(--gold)
 <div class="bottom"><button id="newBtn">دست جدید</button><button id="resetBtn">شروع از نو</button></div>
 <div class="rules">قوانین تگزاس هولدم · هر بازیکن ۲ کارت · ۵ کارت مشترک · بهترین ترکیب ۵ کارتی برنده است.<br>این بازی فقط با ژتون مجازی است و هیچ پول واقعی در آن وجود ندارد.</div>
 </main>
-<div class="overlay" id="welcome"><div class="modal"><h1>♠ امین پوکر</h1><p>به میز پوکر خوش آمدی!<br>با سه رقیب هوش مصنوعی در تگزاس هولدم بازی کن.<br>هدف: ساخت بهترین دست پنج‌کارتی و بردن ژتون‌های مجازی.</p><button id="playBtn" class="gold">ورود به بازی</button></div></div>
+<div class="overlay hidden" id="tutorial"><div class="modal" style="max-height:85vh;overflow:auto;text-align:right"><h1 style="text-align:center">آموزش امین پوکر</h1><p><b>۱. هدف بازی</b><br>با دو کارت اختصاصی خودت و پنج کارت مشترک روی میز، بهترین ترکیب پنج‌کارتی را بساز و برنده شو.</p><p><b>۲. کارت‌ها کجا هستند؟</b><br>دو کارت پایین میز، کنار نام «شما»، کارت‌های دست تو هستند. پنج جای وسط میز با عنوان «کارت‌های مشترک روی میز» برای کارت‌هایی است که همه بازیکنان استفاده می‌کنند.</p><p><b>۳. نوبت و دکمه‌ها</b><br><b>چک / کال:</b> اگر شرطی نیست چک کن؛ اگر شرط گذاشته‌اند به همان اندازه کال کن.<br><b>ریز:</b> مبلغ شرط را افزایش بده.<br><b>فولد:</b> از این دست کنار بکش و کارت‌هایت را واگذار کن.</p><p><b>۴. مراحل پخش کارت</b><br>اول هر نفر ۲ کارت می‌گیرد؛ سپس فلاپ (۳ کارت)، ترن (۱ کارت) و ریور (۱ کارت) روی میز می‌آید. بین مراحل بازیکنان شرط می‌بندند.</p><p><b>۵. برنده</b><br>در پایان بهترین دست پنج‌کارتی برنده ژتون‌های مجازی می‌شود. ترتیب قدرت دست‌ها از قوی به ضعیف: رویال فلاش، استریت فلاش، چهارتایی، فول‌هاوس، فلاش، استریت، سه‌تایی، دو جفت، یک جفت و کارت بالا.</p><button id="closeTutorial" class="gold">متوجه شدم</button></div></div>\n<div class="overlay" id="welcome"><div class="modal"><h1>♠ امین پوکر</h1><p>به میز پوکر خوش آمدی!<br>با سه رقیب هوش مصنوعی در تگزاس هولدم بازی کن.<br>هدف: ساخت بهترین دست پنج‌کارتی و بردن ژتون‌های مجازی.</p><button id="playBtn" class="gold">ورود به بازی</button></div></div>
 <script>
 const suits=['♠','♥','♦','♣'], ranks=['2','3','4','5','6','7','8','9','10','J','Q','K','A'];
 const fa=n=>String(n).replace(/[0-9]/g,d=>'۰۱۲۳۴۵۶۷۸۹'[+d]);
@@ -105,7 +105,7 @@ function dealStreet(){players.forEach(p=>p.bet=0);betToCall=0;acted.clear();if(s
 function nextStreet(){if(street>=3){showdown();return}dealStreet()}
 function showdown(){phase='showdown';let alive=players.map((p,i)=>({p,i})).filter(x=>!x.p.fold);alive.sort((a,b)=>cmp(best([...b.p.hand,...board]),best([...a.p.hand,...board])));let win=alive[0].p;let winners=alive.filter(x=>cmp(best([...x.p.hand,...board]),best([...win.hand,...board]))===0);let share=Math.floor(pot/winners.length);winners.forEach(x=>x.p.stack+=share);say('برنده: '+winners.map(x=>x.p.name).join(' و ')+' · هر نفر '+fa(share)+' ژتون');pot=0;finish()}
 function finish(){roundOver=true;phase='done';dealer=(dealer+1)%4;current=-1;render()}
-$('playBtn').onclick=()=>{$('welcome').classList.add('hidden');startHand()};
+$('playBtn').onclick=()=>{$('welcome').classList.add('hidden');startHand()};\n$('helpBtn').onclick=()=> $('tutorial').classList.remove('hidden');\n$('closeTutorial').onclick=()=> $('tutorial').classList.add('hidden');
 $('startBtn').onclick=startHand;$('newBtn').onclick=()=>{if(phase==='idle'||phase==='done')startHand();else say('این دست هنوز تمام نشده است.')};
 $('resetBtn').onclick=()=>{init();handNo=0;phase='idle';say('بازی از نو آماده شد. برای شروع دست بزن.');render()};
 $('foldBtn').onclick=()=>playerAction('fold');$('callBtn').onclick=()=>playerAction('call');$('raiseBtn').onclick=()=>playerAction('raise',+$('raiseRange').value);
